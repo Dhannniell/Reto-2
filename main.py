@@ -70,7 +70,10 @@ class CitaMascota(Cita):
 class SistemaVeterinaria: # # Define la clase "SistemaVeterinaria" que administra la información de los clientes de la veterinaria.
     def __init__(self): #Constructor de la clase. Inicializa la lista de clientes, que almacenará objetos de tipo Cliente.
         self.clientes = []
-        
+    
+    
+    # Método que permite registrar un nuevo cliente en el sistema.
+    # Solicita al usuario que ingrese los datos necesarios y verifica que todos los campos sean completados.    
     def registrar_clientes(self):
         try:
             # Solicita los datos del cliente mediante la entrada del usuario.
@@ -85,5 +88,102 @@ class SistemaVeterinaria: # # Define la clase "SistemaVeterinaria" que administr
         except ValueError as e:
             # Captura el error si ocurre alguna excepción y muestra un mensaje de error.
             print(f"Error: {e}")
+
+            
+    #Método que permite registrar una nueva mascota asociada a un cliente.        
+    def registrar_mascota(self):
+        try:
+            # Solicita el nombre del cliente para asociarlo a la mascota.
+            nombre_cliente = input("Ingrese el nombre del cliente para asociar la mascota:").strip()
+            # Busca al cliente en la lista de clientes.
+            cliente = next((c for c in self.clientes if c.nombre == nombre_cliente),None)
+            
+            # Si no se encuentra el cliente, lanza un error.
+            if not cliente:
+                raise ValueError("No se encontró al cliente.")
+            
+            # Solicita los detalles de la mascota.
+            nombre_mascota = input("Por favor, ingrese el nombre de la mascota:").strip()
+            especie = input("Por favor, ingrese la especie: ").strip()
+            raza = raza = input("Por favor, ingrese la raza: ").strip()
+            edad = int(input("Por favor, ingrese la edad: ")).strip()
+            
+            # Verifica que los detalles de la mascota sean válidos.
+            if not nombre_mascota or not especie or not raza or edad <= 0:
+                raise ValueError("Detalles de la mascota inválidos.")
+            
+            # Crea una nueva mascota e asocia los detalles ingresados.
+            mascota = RegistrarMascota(nombre_mascota, especie, raza, edad)
+            cliente.agregar_mascota(mascota)
+            print("¡Mascota registrada con éxito!")
+            
+        except ValueError as e:
+            # Captura cualquier error relacionado con valores inválidos y muestra un mensaje de error.
+            print(f"Error: {e}")
+    
+    #Método que permite programar una cita para una mascota asociada a un cliente.        
+    def programar_cita(self): 
+        try:
+            # Solicita el nombre del cliente y el nombre de la mascota.
+            nombre_cliente = input("Ingrese el nombre del cliente para asociar la mascota:").strip()
+            nombre_mascota = input("Ingrese el nombre de la mascota:").strip()
+            
+            # Busca al cliente en la lista de clientes.
+            cliente = next((c for c in self.clientes if c.nombre == nombre_cliente), None)
+            
+            # Si no se encuentra el cliente, lanza un error.
+            if not cliente:
+                raise ValueError("Cliente no encontrado.")
+            
+            # Busca la mascota asociada al cliente.
+            mascota = next((m for m in cliente.mascotas if m.nombre == nombre_mascota), None)
+            
+            # Si no se encuentra la mascota, lanza un error.
+            if not mascota:
+                raise ValueError("Mascota no encontrada.")
+            
+            # Solicita la fecha, hora, servicio y nombre del veterinario para la cita.
+            fecha = input("Ingrese la fecha (AAAA-MM-DD): ").strip()
+            hora = input("Ingrese la hora (HH:MM): ").strip()
+            servicio = input("Ingrese el servicio (consulta, vacunacion, etc): ").strip()
+            veterinario = input("Ingrese el nombre del veterinario: ").strip()
+            
+            # Verifica que la fecha y hora tengan el formato adecuado.
+            datetime.strptime(fecha, "%Y-%m-%d")
+            datetime.strptime(hora, "%H:%M")
+            
+            # Valida que los detalles del servicio y veterinario sean válidos.
+            if not servicio or not veterinario:
+                raise ValueError("Detalles de la cita inválidos.")
+            
+            # Crea una nueva cita para la mascota.
+            cita = CitaMascota(fecha, hora, servicio, veterinario)
+            mascota.agregar_al_historial(cita)
+            print("¡Cita programada con éxito!")
+            
+        except ValueError as e:
+            # Captura cualquier error relacionado con valores inválidos y muestra un mensaje de error
+            print(f"Error: {e}")
             
             
+def actualizar_citas(self):
+        try:
+            # Solicita el nombre del cliente y el nombre de la mascota.
+            nombre_cliente = input("Ingrese el nombre del cliente para asociar la mascota:").strip()
+            nombre_mascota = input("Ingrese el nombre de la mascota:").strip()
+        
+            cliente = next((c for c in self.clientes if c.nombre == nombre_cliente),None)
+            
+            if not cliente:
+                raise ValueError("Cliente no encontrado.")
+            
+            mascota =next((m for m in cliente.mascotas if m.nombre == nombre_mascota), None)
+            if not mascota:
+                raise ValueError("Mascota no encontrada.")
+            
+            if not mascota.historial_citas:
+                raise ValueError("No hay citas registradas para esta mascota.")
+            
+            print("\nCitas disponibles para actualizar:")
+            for i, cita in enumerate(mascota.historial_citas):
+                
