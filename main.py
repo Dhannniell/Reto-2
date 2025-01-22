@@ -264,8 +264,8 @@ class SistemaVeterinaria: # # Define la clase "SistemaVeterinaria" que administr
             
     def iniciar(self):
         while True:
-            print("\n╔══════════════════════════════════════════╗")
-            print("║         Sistema de Gestión Veterinaria    ║")
+            print("╔══════════════════════════════════════════╗")
+            print("║         Sistema de Gestión Veterinaria   ║")
             print("║               Huella Feliz               ║")
             print("╠══════════════════════════════════════════╣")
             print("║ 1. Registrar Cliente.                    ║")
