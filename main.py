@@ -166,24 +166,134 @@ class SistemaVeterinaria: # # Define la clase "SistemaVeterinaria" que administr
             print(f"Error: {e}")
             
             
-def actualizar_citas(self):
+    def actualizar_citas(self):
         try:
             # Solicita el nombre del cliente y el nombre de la mascota.
             nombre_cliente = input("Ingrese el nombre del cliente para asociar la mascota:").strip()
             nombre_mascota = input("Ingrese el nombre de la mascota:").strip()
-        
+            
+            # Busca al cliente en la lista de clientes utilizando el nombre proporcionado.
             cliente = next((c for c in self.clientes if c.nombre == nombre_cliente),None)
             
+            # Si el cliente no existe, lanza un error.
             if not cliente:
                 raise ValueError("Cliente no encontrado.")
             
+            # Busca la mascota del cliente en la lista de mascotas.
             mascota =next((m for m in cliente.mascotas if m.nombre == nombre_mascota), None)
             if not mascota:
                 raise ValueError("Mascota no encontrada.")
             
+            # Verifica si la mascota tiene un historial de citas.
             if not mascota.historial_citas:
                 raise ValueError("No hay citas registradas para esta mascota.")
             
+            # Muestra todas las citas disponibles para actualizar.
             print("\nCitas disponibles para actualizar:")
+            # Muestra las citas con información relevante.
             for i, cita in enumerate(mascota.historial_citas):
+                print(f"{i+1}. Fecha: {cita.fecha}, Hora: {cita.hora}, Servicio: {cita.servicio}, Veterinario: {cita.veterinario}")
+            
+            # Pide al usuario que seleccione el número de la cita a actualizar.    
+            indice = int(input("Seleccione el número de la cita que desea actualizar: ").strip()) -1
+            if indice < 0 or indice >= len(mascota.historial_citas):
+                raise ValueError("Selección inválida.")
+            
+            # Obtiene la cita seleccionada.
+            cita = mascota.historial_citas[indice]
+            
+            # Informa al usuario que puede dejar los campos vacíos si no desea actualizarlos.
+            print("Deje en blanco los campos que no desee actualizar.")
+            
+            # Solicita al usuario los nuevos valores para los campos de la cita.
+            nueva_fecha = input("Nueva fecha (AAAA-MM-DD): ").strip()
+            nueva_hora = input("Nueva hora(HH:MM): ").strip()
+            nuevo_servicio =  input("Nuevo servicio (consulta, vacunacion, etc): ").strip()
+            nuevo_veterinario = input("Nuevo veterinario: ").strip()
+            
+            # Si se proporciona una nueva fecha, la valida y actualiza la cita.
+            if nueva_fecha:
+                datetime.strptime(nueva_fecha, "%Y-%m-%d")
+                cita.actualizar(fecha = nueva_fecha)
+            # Si se proporciona una nueva hora, la valida (aunque no actualiza en este caso).   
+            if nueva_hora:
+                datetime.strptime(nueva_hora, "%H:M")
+            # Si se proporciona un nuevo servicio, lo actualiza.    
+            if nuevo_servicio:
+                cita.actualizar(servicio = nuevo_servicio)
+            # Si se proporciona un nuevo veterinario, lo actualiza.    
+            if nuevo_veterinario:
+                cita.actualizar(veterinario = nuevo_veterinario)
+            
+            # Informa al usuario que la cita se actualizó exitosamente.    
+            print("¡Cita actualizada con éxito!")
+            
+        # Maneja errores específicos de valores no válidos.    
+        except ValueError as e:
+            print(f"Error: {e}")
+            
+        
+    def consultar_historial(self):
+        try:
+            # Solicita el nombre del cliente y el nombre de la mascota.
+            nombre_cliente = input("Ingrese el nombre del cliente para asociar la mascota:").strip()
+            nombre_mascota = input("Ingrese el nombre de la mascota:").strip()
+            
+            # Busca al cliente en la lista de clientes utilizando el nombre proporcionado.
+            cliente = next((c for c in self.clientes if c.nombre == nombre_cliente),None)
+            
+            # Si el cliente no existe, lanza un error.
+            if not cliente:
+                raise ValueError("Cliente no encontrado.")
+            
+            # Busca la mascota del cliente en la lista de mascotas.
+            mascota =next((m for m in cliente.mascotas if m.nombre == nombre_mascota), None)
+            if not mascota:
+                raise ValueError("Mascota no encontrada.")
+            
+            historial = mascota.obtener_historial()
+            if not historial:
+                print("No hay historial disponible para esta mascota. ")
+            else:
+                for entrada in historial:
+                    print(f"Fecha: {entrada.fecha}, Hora: {entrada.hora}, Servicio: {entrada.servicio}, Veterinario: {entrada.veterinario}")
+            
+        # Maneja errores específicos de valores no válidos.    
+        except ValueError as e:
+            print(f"Error: {e}")
+            
+    def iniciar(self):
+        while True:
+            print("\n╔══════════════════════════════════════════╗")
+            print("║         Sistema de Gestión Veterinaria    ║")
+            print("║               Huella Feliz               ║")
+            print("╠══════════════════════════════════════════╣")
+            print("║ 1. Registrar Cliente.                    ║")
+            print("║ 2. Registrar Mascota.                    ║")
+            print("║ 3. Programar Cita.                       ║")
+            print("║ 4. Actualizar Cita.                      ║")
+            print("║ 5. Consultar Historial.                  ║")
+            print("║ 6. Salir.                                ║")
+            print("╚══════════════════════════════════════════╝")
+            
+            opcion = input("Ingrese su opcion: ").strip()
+            
+            if opcion == "1":
+                self.registrar_clientes()
+            elif opcion == "2":
+                self.registrar_mascota()
+            elif opcion == "3":
+                self.programar_cita()
+            elif opcion == "4":
+                self.actualizar_citas()
+            elif opcion == "5":
+                self.consultar_historial()
+            elif opcion == "6":
+                print("¡Gracias por usar nuestro sistema! ¡Hasta pronto!")
+                break
+            else:
+                print("Opción inválida. Por favor, intente nuevamente.")
                 
+if __name__ == "__main__":
+    sistema = SistemaVeterinaria()
+    sistema.iniciar()
