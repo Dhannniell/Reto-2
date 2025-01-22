@@ -63,7 +63,7 @@ class RegistrarMascota(Mascota): # Clase que hereda de Mascota y añade funciona
 
 class CitaMascota(Cita):
     def actualizar(self, **kwargs):
-        for clave, valor in kwargs.item(): # Itera sobre los argumentos clave-valor proporcionados.
+        for clave, valor in kwargs.items(): # Itera sobre los argumentos clave-valor proporcionados.
             if hasattr(self, clave):  # Verifica si el atributo existe en la instancia de la clase.
                 setattr(self, clave, valor)  # Si el atributo existe, lo actualiza con el nuevo valor.
 
@@ -106,7 +106,7 @@ class SistemaVeterinaria: # # Define la clase "SistemaVeterinaria" que administr
             nombre_mascota = input("Por favor, ingrese el nombre de la mascota:").strip()
             especie = input("Por favor, ingrese la especie: ").strip()
             raza = raza = input("Por favor, ingrese la raza: ").strip()
-            edad = int(input("Por favor, ingrese la edad: ")).strip()
+            edad = int(input("Por favor, ingrese la edad: "))
             
             # Verifica que los detalles de la mascota sean válidos.
             if not nombre_mascota or not especie or not raza or edad <= 0:
