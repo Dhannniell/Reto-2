@@ -85,6 +85,10 @@ class SistemaVeterinaria: # # Define la clase "SistemaVeterinaria" que administr
             if not nombre or not contacto or not direccion:
                 raise ValueError("Es obligatorio completar todos los campos.")
             
+            cliente = Cliente(nombre, contacto, direccion)
+            self.clientes.append(cliente)
+            print("¡Cliente registrado con éxito!")
+            
         except ValueError as e:
             # Captura el error si ocurre alguna excepción y muestra un mensaje de error.
             print(f"Error: {e}")
