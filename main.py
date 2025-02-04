@@ -222,6 +222,7 @@ class SistemaVeterinaria: # # Define la clase "SistemaVeterinaria" que administr
             # Si se proporciona una nueva hora, la valida (aunque no actualiza en este caso).   
             if nueva_hora:
                 datetime.strptime(nueva_hora, "%H:%M")
+                cita.actualizar(hora = nueva_hora)
             # Si se proporciona un nuevo servicio, lo actualiza.    
             if nuevo_servicio:
                 cita.actualizar(servicio = nuevo_servicio)
